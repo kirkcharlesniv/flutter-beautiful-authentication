@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:springboard/screens/sign_up.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -75,14 +76,10 @@ class _SignInState extends State<SignIn> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            child: FlareActor(
-              "assets/animations/springboard_login.flr",
-              animation: isDismissing ? "reverse" : "forward",
-              fit: BoxFit.cover,
-            ),
+          FlareActor(
+            "assets/animations/springboard_login.flr",
+            animation: isDismissing ? "reverse" : "forward",
+            fit: BoxFit.cover,
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
@@ -120,11 +117,18 @@ class _SignInState extends State<SignIn> with SingleTickerProviderStateMixin {
                           child: Column(
                             children: <Widget>[
                               TextFormField(
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (_) =>
+                                    FocusScope.of(context).nextFocus(),
                                 decoration: InputDecoration(hintText: 'Email'),
                               ),
                               TextFormField(
-                                decoration:
-                                    InputDecoration(hintText: 'Password'),
+                                obscureText: true,
+                                onFieldSubmitted: (_) =>
+                                    FocusScope.of(context).unfocus(),
+                                decoration: InputDecoration(
+                                  hintText: 'Password',
+                                ),
                               ),
                             ],
                           ),
@@ -180,7 +184,11 @@ class _SignInState extends State<SignIn> with SingleTickerProviderStateMixin {
                                 setState(() {
                                   isDismissing = true;
                                   _controller.reverse().then((_) {
-                                    print('Navigate on Sign Up');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SignUp()),
+                                    );
                                   });
                                 });
                               },
