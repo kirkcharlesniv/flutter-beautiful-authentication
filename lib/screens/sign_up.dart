@@ -51,7 +51,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
         parent: _controller,
         curve: Interval(
           0.0, // 1
-          0.5,
+          0.25,
           curve: Curves.ease,
         ),
       ),
@@ -61,8 +61,8 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       CurvedAnimation(
         parent: _controller,
         curve: Interval(
-          0.25, // 1
-          0.75,
+          0.15, // 1
+          0.4,
           curve: Curves.ease,
         ),
       ),
@@ -72,8 +72,8 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       CurvedAnimation(
         parent: _controller,
         curve: Interval(
-          0.5, // 1
-          1,
+          0.4, // 1
+          0.6,
           curve: Curves.ease,
         ),
       ),
@@ -83,8 +83,8 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       CurvedAnimation(
         parent: _controller,
         curve: Interval(
-          0.75, // 1
-          1,
+          0.5, // 1
+          0.7,
           curve: Curves.ease,
         ),
       ),
