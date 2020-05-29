@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
+import 'home.dart';
 import 'sign_in.dart';
 
 class SignUp extends StatefulWidget {
@@ -12,9 +15,14 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   AnimationController _controller;
+  String uid;
 
   final _formKey = GlobalKey<FormState>();
   bool isDismissing = false;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   // Staggered Animation
   Animation<double> pItem1;
@@ -124,7 +132,14 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 TextFormField(
+                                  controller: nameController,
                                   style: TextStyle(color: Colors.white),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Enter your name.';
+                                    }
+                                    return null;
+                                  },
                                   textInputAction: TextInputAction.next,
                                   onFieldSubmitted: (_) =>
                                       FocusScope.of(context).nextFocus(),
@@ -146,8 +161,20 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                   ),
                                 ),
                                 TextFormField(
+                                  controller: emailController,
                                   style: TextStyle(color: Colors.white),
                                   textInputAction: TextInputAction.next,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Enter your email address';
+                                    }
+                                    Pattern pattern =
+                                        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                    RegExp regex = RegExp(pattern);
+                                    if (!regex.hasMatch(value))
+                                      return 'Enter Valid Email';
+                                    return null;
+                                  },
                                   onFieldSubmitted: (_) =>
                                       FocusScope.of(context).nextFocus(),
                                   decoration: InputDecoration(
@@ -168,10 +195,17 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                   ),
                                 ),
                                 TextFormField(
+                                  controller: passwordController,
                                   style: TextStyle(color: Colors.white),
                                   onFieldSubmitted: (_) =>
                                       FocusScope.of(context).unfocus(),
                                   obscureText: true,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Enter your password';
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                     contentPadding:
                                         EdgeInsets.symmetric(vertical: 30),
@@ -206,23 +240,68 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                     fontSize: 34,
                                     color: Colors.white),
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.bottomLeft,
-                                    end: Alignment.topRight,
-                                    colors: [
-                                      Color(0xff3D404A),
-                                      Color(0xff545C67)
-                                    ],
+                              GestureDetector(
+                                onTap: () async {
+                                  if (_formKey.currentState.validate()) {
+                                    FirebaseAuth.instance
+                                        .createUserWithEmailAndPassword(
+                                            email: emailController.text,
+                                            password: passwordController.text)
+                                        .then((result) async {
+                                      uid = result.user.uid;
+                                      await Firestore.instance
+                                          .collection('users')
+                                          .document(result.user.uid)
+                                          .setData({
+                                        "email": emailController.text,
+                                        "name": nameController.text
+                                      });
+
+                                      assert(uid != null);
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Home(uid: uid)),
+                                      );
+                                    }).catchError((err) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Error"),
+                                              content: Text(err.message),
+                                              actions: [
+                                                FlatButton(
+                                                  child: Text("Ok"),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight,
+                                      colors: [
+                                        Color(0xff3D404A),
+                                        Color(0xff545C67)
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(28.0),
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.white,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(28.0),
+                                    child: Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
