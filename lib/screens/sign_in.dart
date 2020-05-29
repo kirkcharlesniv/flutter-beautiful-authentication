@@ -38,7 +38,7 @@ class _SignInState extends State<SignIn> with SingleTickerProviderStateMixin {
     isDismissing = false;
 
     // Start Staggered Animation
-    Timer(Duration(milliseconds: 1600), () {
+    Timer(Duration(milliseconds: 1500), () {
       _controller.forward();
     });
 
@@ -47,7 +47,7 @@ class _SignInState extends State<SignIn> with SingleTickerProviderStateMixin {
         parent: _controller,
         curve: Interval(
           0.0, // 1
-          0.25,
+          0.15,
           curve: Curves.ease,
         ),
       ),
@@ -57,8 +57,8 @@ class _SignInState extends State<SignIn> with SingleTickerProviderStateMixin {
       CurvedAnimation(
         parent: _controller,
         curve: Interval(
-          0.15, // 1
-          0.4,
+          0.10, // 1
+          0.25,
           curve: Curves.ease,
         ),
       ),
@@ -68,8 +68,8 @@ class _SignInState extends State<SignIn> with SingleTickerProviderStateMixin {
       CurvedAnimation(
         parent: _controller,
         curve: Interval(
-          0.4, // 1
-          0.6,
+          0.20, // 1
+          0.30,
           curve: Curves.ease,
         ),
       ),
