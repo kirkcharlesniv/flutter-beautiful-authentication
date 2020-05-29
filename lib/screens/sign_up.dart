@@ -35,7 +35,6 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
 
     // Start Staggered Animation
     Timer(Duration(milliseconds: 1600), () {
-      print('Starting staggered animation');
       _controller.forward();
     });
 

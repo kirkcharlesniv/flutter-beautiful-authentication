@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "667178776257",
+    "firebase_url": "https://techinterview-fc7ea.firebaseio.com",
+    "project_id": "techinterview-fc7ea",
+    "storage_bucket": "techinterview-fc7ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667178776257:android:750917d52c516e64f90640",
+        "android_client_info": {
+          "package_name": "com.example.springboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667178776257-afbtagjrdobbth608ftkim092gau7u9b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.springboard",
+            "certificate_hash": "eeb861f975e08ed741699acbf55c281da8e3d555"
+          }
+        },
+        {
+          "client_id": "667178776257-n982gmi8chmhg9daa15t2ca3h2u33lcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjbh8bpawMPRFYNkMovcQz9A94ohHbx5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667178776257-n982gmi8chmhg9daa15t2ca3h2u33lcg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
